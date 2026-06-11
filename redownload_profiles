@@ -20,7 +20,11 @@ Dir.glob(ENV['HOME'] + '/Library/MobileDevice/Provisioning Profiles/*.mobileprov
   end
 end
 
-profiles = client.provisioning_profiles.select {|p| target_names.any? {|v| v == p['name'] } }
+profiles = client.provisioning_profiles
+unless target_names.empty? 
+  profiles = profiles.select {|p| target_names.any? {|v| v == p['name'] } }
+end
+
 profiles.each do |profile|
   name = profile['name']
   target_path = ENV['HOME'] + '/Library/MobileDevice/Provisioning Profiles/' + profile['UUID'] + '.mobileprovision'
